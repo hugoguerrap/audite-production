@@ -18,7 +18,7 @@ if not DATABASE_URL:
         print("🔧 Entorno de desarrollo detectado")
         # Preferir PostgreSQL en desarrollo también
         if os.getenv("USE_POSTGRES_DEV", "true").lower() == "true":
-            DATABASE_URL = ""postgresql://[SECRET-REMOVED]""
+            DATABASE_URL = "postgresql://audite_user:audite_password_2024@db:5432/audite"
             print("🐘 Usando PostgreSQL para desarrollo (recomendado)")
         else:
             DATABASE_URL = "sqlite:///./audite.db"

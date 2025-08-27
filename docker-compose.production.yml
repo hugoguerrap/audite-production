@@ -29,7 +29,7 @@ services:
       dockerfile: Dockerfile.dev
     container_name: audite_backend_prod
     environment:
-      - DATABASE_URL="postgresql://[SECRET-REMOVED]"
+      - DATABASE_URL=postgresql://audite_user:audite_password_2024@db:5432/audite
       - JWT_SECRET_KEY=audite_production_secret_key_32_chars_minimum_length_required_postgresql_secure
       - ALGORITHM=HS256
       - ADMIN_USERNAME=admin
@@ -68,7 +68,7 @@ services:
       - VITE_API_URL=http://localhost:8000
       - NODE_ENV=production
     ports:
-      - "80:8080"
+      - "80:5173"
     networks:
       - audite_network
     depends_on:

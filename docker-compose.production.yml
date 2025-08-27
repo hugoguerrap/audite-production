@@ -1,0 +1,93 @@
+services:
+  # Base de datos PostgreSQL
+  db:
+    image: postgres:15
+    container_name: audite_postgres_prod
+    environment:
+      POSTGRES_DB: audite
+      POSTGRES_USER: audite_user
+      POSTGRES_PASSWORD: audite_password_2024
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./audite/scripts/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    networks:
+      - audite_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U audite_user -d audite"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  # Backend FastAPI
+  backend:
+    build:
+      context: ./audite
+      dockerfile: Dockerfile.dev
+    container_name: audite_backend_prod
+    environment:
+      - DATABASE_URL="postgresql://[SECRET-REMOVED]"
+      - JWT_SECRET_KEY=audite_production_secret_key_32_chars_minimum_length_required_postgresql_secure
+      - ALGORITHM=HS256
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=Audite2024SecurePass!
+      - CORS_ORIGINS=*
+      - ENVIRONMENT=production
+      - LOG_LEVEL=INFO
+    ports:
+      - "8000:8000"
+    networks:
+      - audite_network
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "
+        echo '🔄 Esperando base de datos...' &&
+        sleep 10 &&
+        echo '🚀 Iniciando servidor FastAPI...' &&
+        uvicorn app.main:app --host 0.0.0.0 --port 8000
+      "
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: always
+
+  # Frontend React
+  frontend:
+    build:
+      context: ./audite-frontend-explorer
+      dockerfile: Dockerfile.dev
+    container_name: audite_frontend_prod
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - NODE_ENV=production
+    ports:
+      - "80:8080"
+    networks:
+      - audite_network
+    depends_on:
+      - backend
+    command: >
+      sh -c "
+        echo '📦 Instalando dependencias...' &&
+        npm install &&
+        echo '🏗️ Construyendo aplicación...' &&
+        npm run build &&
+        echo '🚀 Sirviendo aplicación...' &&
+        npm run preview -- --host 0.0.0.0 --port 8080
+      "
+    restart: always
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  audite_network:
+    driver: bridge

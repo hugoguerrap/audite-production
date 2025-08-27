@@ -1,0 +1,35 @@
+{
+  "hoja": "EQUIPOS-PROCESOS",
+  "estructura": {
+    "nombres": [
+      "EQUIPO",
+      "PROCESO"
+    ],
+    "tipos": {
+      "EQUIPO": "object",
+      "PROCESO": "object"
+    }
+  },
+  "muestra_datos": [
+    {
+      "EQUIPO": "Tractor",
+      "PROCESO": "Preparación del terreno"
+    },
+    {
+      "EQUIPO": "Fertilizadoras",
+      "PROCESO": "Preparación del terreno"
+    },
+    {
+      "EQUIPO": "Podadoras",
+      "PROCESO": "Manejo de cultivos"
+    },
+    {
+      "EQUIPO": "Cosechadora",
+      "PROCESO": "Cosecha"
+    },
+    {
+      "EQUIPO": "Goteros",
+      "PROCESO": "Manejo de cultivos"
+    }
+  ]
+}

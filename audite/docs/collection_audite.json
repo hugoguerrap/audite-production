@@ -1,0 +1,422 @@
+{
+	"info": {
+		"name": "Audite API Collection",
+		"description": "Colección de endpoints para la API de Audite v2.0.0",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "token",
+			"value": "",
+			"type": "string",
+			"description": "Token de autenticación JWT"
+		},
+		{
+			"key": "id",
+			"value": "",
+			"type": "string",
+			"description": "ID de la auditoría"
+		},
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000",
+			"type": "string",
+			"description": "URL base de la API"
+		}
+	],
+	"item": [
+		{
+			"name": "Autenticación",
+			"item": [
+				{
+					"name": "Registro de Usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"usuario@ejemplo.com\",\n    \"password\": \"contraseña123\",\n    \"nombre\": \"Usuario Ejemplo\",\n    \"empresa\": \"Empresa Agrícola SA\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "register"]
+						},
+						"description": "Registra un nuevo usuario en el sistema"
+					}
+				},
+				{
+					"name": "Login - Obtener Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "usuario@ejemplo.com"
+								},
+								{
+									"key": "password",
+									"value": "contraseña123"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/token",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "token"]
+						},
+						"description": "Obtiene un token de acceso"
+					}
+				}
+			]
+		},
+		{
+			"name": "Auditorías Básicas",
+			"item": [
+				{
+					"name": "Crear Auditoría Básica",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre_empresa\": \"Empresa Ejemplo\",\n    \"sector\": \"Agrícola\",\n    \"tamano_instalacion\": 1000,\n    \"num_empleados\": 50,\n    \"consumo_anual\": 120000,\n    \"factura_mensual\": 5000,\n    \"tiene_auditoria_previa\": false,\n    \"fuentes_energia\": [\"electricidad\", \"gas_natural\"],\n    \"datos_equipos\": {\n        \"iluminacion\": {\"potencia\": 5000, \"horas_uso\": 3000},\n        \"climatizacion\": {\"potencia\": 10000, \"horas_uso\": 2000}\n    },\n    \"notas\": \"Auditoría inicial para evaluación energética\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auditoria-basica/",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-basica", ""]
+						},
+						"description": "Crea una nueva auditoría básica"
+					}
+				},
+				{
+					"name": "Listar Auditorías Básicas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auditoria-basica/",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-basica", ""]
+						},
+						"description": "Obtiene la lista de auditorías básicas del usuario"
+					}
+				},
+				{
+					"name": "Obtener Auditoría Básica",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auditoria-basica/{{id}}",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-basica", "{{id}}"]
+						},
+						"description": "Obtiene los detalles de una auditoría básica específica"
+					}
+				},
+				{
+					"name": "Actualizar Auditoría Básica",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"consumo_anual\": 130000,\n    \"factura_mensual\": 5500,\n    \"notas\": \"Actualización después de implementar mejoras\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auditoria-basica/{{id}}",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-basica", "{{id}}"]
+						},
+						"description": "Actualiza una auditoría básica existente"
+					}
+				},
+				{
+					"name": "Eliminar Auditoría Básica",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auditoria-basica/{{id}}",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-basica", "{{id}}"]
+						},
+						"description": "Elimina una auditoría básica"
+					}
+				}
+			]
+		},
+		{
+			"name": "Auditorías Agrícolas",
+			"item": [
+				{
+					"name": "Crear Auditoría Agrícola",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre_proyecto\": \"Finca Los Olivos\",\n    \"ubicacion\": \"Valle Central\",\n    \"area_total\": 100,\n    \"tipo_cultivo\": \"Olivos\",\n    \"produccion_anual\": 50000,\n    \"consumo_electrico\": 75000,\n    \"consumo_combustible\": 15000,\n    \"consumo_agua\": 120000,\n    \"sistemas_riego\": {\n        \"tipo\": \"goteo\",\n        \"area_cubierta\": 95,\n        \"eficiencia\": 0.9\n    },\n    \"equipos\": {\n        \"tractores\": 2,\n        \"bombas\": 3,\n        \"sistemas_control\": true\n    },\n    \"tiene_mantenimiento\": true,\n    \"tiene_automatizacion\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auditoria-agro/",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-agro", ""]
+						},
+						"description": "Crea una nueva auditoría agrícola"
+					}
+				},
+				{
+					"name": "Listar Auditorías Agrícolas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auditoria-agro/",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-agro", ""]
+						},
+						"description": "Obtiene la lista de auditorías agrícolas del usuario"
+					}
+				},
+				{
+					"name": "Obtener Auditoría Agrícola",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auditoria-agro/{{id}}",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-agro", "{{id}}"]
+						},
+						"description": "Obtiene los detalles de una auditoría agrícola específica"
+					}
+				},
+				{
+					"name": "Actualizar Auditoría Agrícola",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"consumo_electrico\": 80000,\n    \"consumo_agua\": 115000,\n    \"tiene_automatizacion\": true,\n    \"sistemas_riego\": {\n        \"tipo\": \"goteo\",\n        \"area_cubierta\": 100,\n        \"eficiencia\": 0.95\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auditoria-agro/{{id}}",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-agro", "{{id}}"]
+						},
+						"description": "Actualiza una auditoría agrícola existente"
+					}
+				},
+				{
+					"name": "Eliminar Auditoría Agrícola",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auditoria-agro/{{id}}",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-agro", "{{id}}"]
+						},
+						"description": "Elimina una auditoría agrícola"
+					}
+				}
+			]
+		},
+		{
+			"name": "Datos Agrícolas",
+			"item": [
+				{
+					"name": "Cargar Datos por Defecto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/agro-data/load-default-data",
+							"host": ["{{base_url}}"],
+							"path": ["agro-data", "load-default-data"]
+						},
+						"description": "Carga los datos por defecto desde los scripts SQL"
+					}
+				},
+				{
+					"name": "Obtener Tipos de Industria",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/agro-data/industry-types",
+							"host": ["{{base_url}}"],
+							"path": ["agro-data", "industry-types"]
+						},
+						"description": "Obtiene la lista de tipos de industria agrícola"
+					}
+				},
+				{
+					"name": "Obtener Equipos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/agro-data/equipment",
+							"host": ["{{base_url}}"],
+							"path": ["agro-data", "equipment"]
+						},
+						"description": "Obtiene la lista de equipos agrícolas"
+					}
+				},
+				{
+					"name": "Obtener Procesos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/agro-data/processes",
+							"host": ["{{base_url}}"],
+							"path": ["agro-data", "processes"]
+						},
+						"description": "Obtiene la lista de procesos agrícolas"
+					}
+				},
+				{
+					"name": "Obtener Categorías de Equipos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/agro-data/equipment-categories",
+							"host": ["{{base_url}}"],
+							"path": ["agro-data", "equipment-categories"]
+						},
+						"description": "Obtiene la lista de categorías de equipos"
+					}
+				},
+				{
+					"name": "Obtener Etapas y Subsectores",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/agro-data/etapa-subsector",
+							"host": ["{{base_url}}"],
+							"path": ["agro-data", "etapa-subsector"]
+						},
+						"description": "Obtiene la lista de relaciones entre etapas y subsectores"
+					}
+				}
+			]
+		}
+	]
+} 

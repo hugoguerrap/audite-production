@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Environment variables
+.env*
+*.env
+
+# Database
+*.db
+*.sqlite
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Logs
+*.log
+
+# Credentials and secrets
+credenciales_admin.txt
+github_token.txt
+
+# Backups
+backups/
+*.backup*

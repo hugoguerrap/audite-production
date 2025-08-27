@@ -1,0 +1,56 @@
+{
+  "hoja": "SECTOR - SUBSEC-PRODUCTO",
+  "estructura": {
+    "nombres": [
+      "SECTOR",
+      "SUBSECTOR",
+      "PRODUCTO",
+      "KPI 1",
+      "KPI 2"
+    ],
+    "tipos": {
+      "SECTOR": "object",
+      "SUBSECTOR": "object",
+      "PRODUCTO": "object",
+      "KPI 1": "object",
+      "KPI 2": "object"
+    }
+  },
+  "muestra_datos": [
+    {
+      "SECTOR": "Agroindustria",
+      "SUBSECTOR": "Agroindustria Hortofrutícola",
+      "PRODUCTO": "Productos frescos",
+      "KPI 1": "kWh/caja",
+      "KPI 2": "kWh/Ton"
+    },
+    {
+      "SECTOR": "Agroindustria",
+      "SUBSECTOR": "Agroindustria Hortofrutícola",
+      "PRODUCTO": "Harina y aceites",
+      "KPI 1": "kWh/lt",
+      "KPI 2": "kWh/Ton"
+    },
+    {
+      "SECTOR": "Agroindustria",
+      "SUBSECTOR": "Agroindustria Hortofrutícola",
+      "PRODUCTO": "Frutas y verduras congeladas",
+      "KPI 1": "kWh/caja",
+      "KPI 2": "kWh/Ton"
+    },
+    {
+      "SECTOR": "Agroindustria",
+      "SUBSECTOR": "Agroindustria Hortofrutícola",
+      "PRODUCTO": "Frutas y verduras deshidratadas",
+      "KPI 1": "kWh/caja",
+      "KPI 2": "kWh/Ton"
+    },
+    {
+      "SECTOR": "Agroindustria",
+      "SUBSECTOR": "Agroindustria Animal",
+      "PRODUCTO": "Productos cárnicos",
+      "KPI 1": "kWh/caja",
+      "KPI 2": "kWh/Ton"
+    }
+  ]
+}

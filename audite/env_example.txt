@@ -1,0 +1,44 @@
+# Base de datos
+DATABASE_URL=postgresql://usuario:contraseña@localhost/audite_db
+
+# JWT Configuration - IMPORTANTE: Cambiar en producción
+JWT_SECRET_KEY=tu_clave_secreta_jwt_muy_larga_y_segura_aqui_minimo_32_caracteres
+ALGORITHM=HS256
+
+# Admin Credentials - IMPORTANTE: Cambiar en producción
+ADMIN_USERNAME=admin_audite
+ADMIN_PASSWORD=TuContraseñaSuperSegura2024!
+
+# CORS Configuration
+CORS_ORIGINS=http://localhost:8080,http://127.0.0.1:8080,https://tu-dominio.com
+
+# Environment
+ENVIRONMENT=development
+
+# Database Setup
+SKIP_DB_SETUP=false
+
+# Security Headers
+SECURE_HEADERS=true
+
+# Rate Limiting
+RATE_LIMIT_ENABLED=true
+RATE_LIMIT_REQUESTS=100
+RATE_LIMIT_WINDOW=3600
+
+# Logging
+LOG_LEVEL=INFO
+LOG_FILE=logs/app.log
+
+# Session Configuration
+SESSION_EXPIRE_MINUTES=60
+REFRESH_TOKEN_EXPIRE_DAYS=7
+
+# API Configuration
+API_VERSION=2.0.0
+API_TITLE=Audite API
+
+# Security
+BCRYPT_ROUNDS=12
+MAX_LOGIN_ATTEMPTS=3
+LOCKOUT_DURATION_MINUTES=5 

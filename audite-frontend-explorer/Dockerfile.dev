@@ -1,0 +1,37 @@
+# Dockerfile para desarrollo - Frontend React + Vite
+FROM node:18-alpine
+
+# Metadatos
+LABEL maintainer="AuditE Development Team"
+LABEL description="React Frontend - Development Environment"
+
+# Instalar dependencias del sistema
+RUN apk add --no-cache \
+    curl \
+    git
+
+# Crear directorio de trabajo
+WORKDIR /app
+
+# Copiar package.json y package-lock.json
+COPY package*.json ./
+
+# Instalar dependencias
+RUN npm ci --only=production=false
+
+# Copiar código fuente
+COPY . .
+
+# Crear usuario no-root para seguridad
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+
+# Cambiar permisos
+RUN chown -R nextjs:nodejs /app
+USER nextjs
+
+# Exponer puerto
+EXPOSE 3000
+
+# Comando por defecto (se puede sobrescribir en docker-compose)
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"] 

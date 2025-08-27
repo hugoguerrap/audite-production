@@ -1,0 +1,283 @@
+{
+	"info": {
+		"_postman_id": "b5e3d8a1-4b2f-4e3c-9d2a-8f8b9b8b9b8b",
+		"name": "Audite API",
+		"description": "API para auditorías energéticas básicas y agrícolas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Autenticación",
+			"description": "Endpoints para registro y autenticación de usuarios",
+			"item": [
+				{
+					"name": "Registrar Usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"usuario@ejemplo.com\",\n    \"password\": \"contraseña123\",\n    \"nombre\": \"Juan Pérez\",\n    \"empresa\": \"Agrícola El Sol\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "register"]
+						},
+						"description": "Registra un nuevo usuario en el sistema"
+					}
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "usuario@ejemplo.com"
+								},
+								{
+									"key": "password",
+									"value": "contraseña123"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/token",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "token"]
+						},
+						"description": "Obtiene un token de acceso JWT"
+					}
+				}
+			]
+		},
+		{
+			"name": "Auditoría Básica",
+			"description": "Endpoints para auditorías energéticas básicas (sin autenticación)",
+			"item": [
+				{
+					"name": "Crear Auditoría Básica",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre_empresa\": \"Empresa Ejemplo\",\n    \"sector\": \"Industrial\",\n    \"consumo_mensual\": 3000.5,\n    \"tipo_energia\": \"electricidad\",\n    \"ubicacion\": \"Lima, Perú\",\n    \"notas\": \"Evaluación inicial de consumo energético\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auditoria-basica/",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-basica", ""]
+						},
+						"description": "Crea una nueva auditoría energética básica"
+					}
+				},
+				{
+					"name": "Listar Auditorías Básicas",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/auditoria-basica/?skip=0&limit=100",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-basica", ""],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "100"
+								}
+							]
+						},
+						"description": "Obtiene la lista de todas las auditorías básicas"
+					}
+				},
+				{
+					"name": "Obtener Auditoría Básica",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/auditoria-basica/1",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-basica", "1"]
+						},
+						"description": "Obtiene los detalles de una auditoría básica específica"
+					}
+				}
+			]
+		},
+		{
+			"name": "Auditoría Agro",
+			"description": "Endpoints para auditorías agrícolas (requiere autenticación)",
+			"item": [
+				{
+					"name": "Crear Auditoría Agro",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre_proyecto\": \"Auditoría Finca El Sol\",\n    \"ubicacion\": \"Lima, Perú\",\n    \"area_total\": 100.5,\n    \"tipo_cultivo\": \"Maíz\",\n    \"consumo_electrico\": 5000,\n    \"consumo_combustible\": 3000,\n    \"consumo_agua\": 10000,\n    \"equipos\": {\n        \"tractores\": 2,\n        \"bombas\": 5,\n        \"sistemas_riego\": 1\n    },\n    \"sistemas_riego\": {\n        \"tipo\": \"goteo\",\n        \"cobertura\": 80\n    },\n    \"diagnostico\": \"Evaluación inicial del sistema de riego\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auditoria-agro/",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-agro", ""]
+						},
+						"description": "Crea una nueva auditoría agrícola con análisis automático"
+					}
+				},
+				{
+					"name": "Listar Auditorías Agro",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auditoria-agro/?skip=0&limit=100",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-agro", ""],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "100"
+								}
+							]
+						},
+						"description": "Obtiene la lista de auditorías agrícolas del usuario autenticado"
+					}
+				},
+				{
+					"name": "Obtener Auditoría Agro",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auditoria-agro/1",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-agro", "1"]
+						},
+						"description": "Obtiene los detalles de una auditoría agrícola específica"
+					}
+				},
+				{
+					"name": "Actualizar Auditoría Agro",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre_proyecto\": \"Auditoría Finca El Sol - Actualizado\",\n    \"area_total\": 120.5,\n    \"consumo_electrico\": 5500,\n    \"consumo_combustible\": 3200,\n    \"consumo_agua\": 11000,\n    \"equipos\": {\n        \"tractores\": 3,\n        \"bombas\": 5,\n        \"sistemas_riego\": 2\n    },\n    \"sistemas_riego\": {\n        \"tipo\": \"goteo\",\n        \"cobertura\": 85\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auditoria-agro/1",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-agro", "1"]
+						},
+						"description": "Actualiza una auditoría agrícola existente y recalcula el análisis"
+					}
+				},
+				{
+					"name": "Eliminar Auditoría Agro",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auditoria-agro/1",
+							"host": ["{{base_url}}"],
+							"path": ["auditoria-agro", "1"]
+						},
+						"description": "Elimina una auditoría agrícola"
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string",
+			"description": "URL base de la API"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string",
+			"description": "Token JWT de autenticación"
+		}
+	]
+} 

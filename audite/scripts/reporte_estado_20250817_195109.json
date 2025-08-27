@@ -1,0 +1,13 @@
+{
+  "timestamp": "20250817_195109",
+  "tradicional": null,
+  "avanzado": {
+    "categorias": 0,
+    "formularios": 0,
+    "preguntas": 0,
+    "preguntas_condicionales": 0,
+    "respuestas": 0,
+    "sesiones": 0
+  },
+  "prerequisitos": false
+}

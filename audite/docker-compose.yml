@@ -1,0 +1,61 @@
+services:
+  # Comentamos la sección db ya que ahora usaremos la base de datos de DigitalOcean
+  # db:
+  #   image: postgres:15-alpine
+  #   container_name: audite_db
+  #   environment:
+  #     POSTGRES_USER: ${POSTGRES_USER:-postgres}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+  #     POSTGRES_DB: ${POSTGRES_DB:-audite}
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data/
+  #     - ./scripts:/docker-entrypoint-initdb.d/
+  #   expose:
+  #     - "5432"
+  #   networks:
+  #     - audite_network
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-audite}"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 5
+
+  backend:
+    container_name: audite_backend
+    image: ghcr.io/hugoguerrap/audite-backend:latest
+    command: >
+      gunicorn -k uvicorn.workers.UvicornWorker
+      --timeout 120 --workers 2
+      app.main:app --bind 0.0.0.0:8000
+    expose:
+      - "8000"
+    environment:
+      # Configuración para la base de datos de DigitalOcean
+      DATABASE_URL: "postgresql://[SECRET-REMOVED]""[REMOVED-SECRET]"@audite-db-do-user-7989205-0.d.db.ondigitalocean.com:25060/defaultdb?sslmode=require
+      SKIP_DB_SETUP: "${SKIP_DB_SETUP:-false}"
+      CORS_ORIGINS: "${CORS_ORIGINS:-https://audit-energia.com,http://audit-energia.com,http://localhost:8080}"
+    # depends_on ya no necesita la base de datos local
+    # depends_on:
+    #   - db
+    networks:
+      - audite_network
+    restart: unless-stopped
+
+  frontend:
+    container_name: audite_frontend
+    image: ghcr.io/hugoguerrap/audite-frontend:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+    networks:
+      - audite_network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  audite_network:
+    driver: bridge

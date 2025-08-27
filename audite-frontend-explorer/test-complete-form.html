@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Complete Form</title>
+</head>
+<body>
+    <h1>Test Script para Completar Formulario</h1>
+    <button onclick="completeForm()">Completar Formulario Automáticamente</button>
+    
+    <script>
+    async function completeForm() {
+        // Respuestas de prueba
+        const respuestas = [
+            { pregunta_id: 1, opcion_seleccionada: "Fruta fresca" },
+            { pregunta_id: 2, opcion_seleccionada: "Hectáreas" },
+            { pregunta_id: 3, respuesta_numero: 100 },
+            { pregunta_id: 4, opciones_seleccionadas: ["Riego", "Cosecha"] },
+            { pregunta_id: 5, opciones_seleccionadas: ["Riego", "Cosecha"] },
+            { pregunta_id: 6, respuesta_texto: JSON.stringify([
+                { proceso: "Riego", porcentaje: 60 },
+                { proceso: "Cosecha", porcentaje: 40 }
+            ])},
+            { pregunta_id: 7, opcion_seleccionada: "Sí" },
+            { pregunta_id: 8, opcion_seleccionada: "Sí" },
+            { pregunta_id: 9, opcion_seleccionada: "Sí" },
+            { pregunta_id: 10, opcion_seleccionada: "Sí" },
+            { pregunta_id: 11, respuesta_numero: 1000 },
+            { pregunta_id: 12, respuesta_numero: 500 },
+            { pregunta_id: 13, respuesta_texto: "Juan Pérez" },
+            { pregunta_id: 14, respuesta_texto: "juan@example.com" },
+            { pregunta_id: 15, respuesta_texto: "123456789" },
+            { pregunta_id: 16, respuesta_texto: "Finca Los Naranjos" },
+        ];
+
+        const sessionId = 'test-session-' + Date.now();
+
+        try {
+            const response = await fetch('http://localhost:8000/autodiagnostico/responder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    respuestas: respuestas.map(r => ({
+                        session_id: sessionId,
+                        ...r
+                    }))
+                }),
+            });
+
+            const result = await response.json();
+            console.log('Formulario completado:', result);
+            
+            // Redirigir a la página de resultados
+            window.open(`http://localhost:8080/autodiagnostico/resultado/${result.session_id}`, '_blank');
+            
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    </script>
+</body>
+</html> 

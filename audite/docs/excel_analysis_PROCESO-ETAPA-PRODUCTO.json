@@ -1,0 +1,42 @@
+{
+  "hoja": "PROCESO-ETAPA-PRODUCTO",
+  "estructura": {
+    "nombres": [
+      "PROCESO",
+      "ETAPA",
+      "PRODUCTO"
+    ],
+    "tipos": {
+      "PROCESO": "object",
+      "ETAPA": "object",
+      "PRODUCTO": "object"
+    }
+  },
+  "muestra_datos": [
+    {
+      "PROCESO": "Preparación del terreno",
+      "ETAPA": "Campo",
+      "PRODUCTO": "Productos del cultivo"
+    },
+    {
+      "PROCESO": "Manejo de cultivos",
+      "ETAPA": "Campo",
+      "PRODUCTO": "Productos del cultivo"
+    },
+    {
+      "PROCESO": "Cosecha",
+      "ETAPA": "Campo",
+      "PRODUCTO": "Productos del cultivo"
+    },
+    {
+      "PROCESO": "Recepción",
+      "ETAPA": "Planta de procesamiento",
+      "PRODUCTO": "Productos del cultivo"
+    },
+    {
+      "PROCESO": "Acondicionamiento",
+      "ETAPA": "Planta de procesamiento",
+      "PRODUCTO": "Productos del cultivo"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "hoja": "ETAPA-SUBSECTOR",
+  "estructura": {
+    "nombres": [
+      "ETAPA",
+      "SUBSECTOR"
+    ],
+    "tipos": {
+      "ETAPA": "object",
+      "SUBSECTOR": "object"
+    }
+  },
+  "muestra_datos": [
+    {
+      "ETAPA": "Campo",
+      "SUBSECTOR": "Agroindustria Hortofrutícola"
+    },
+    {
+      "ETAPA": "Planta de procesamiento",
+      "SUBSECTOR": "Agroindustria Hortofrutícola"
+    },
+    {
+      "ETAPA": "Plantel de animales",
+      "SUBSECTOR": "Agroindustria Animal"
+    },
+    {
+      "ETAPA": "Faenamiento",
+      "SUBSECTOR": "Agroindustria Animal"
+    },
+    {
+      "ETAPA": "Proceso",
+      "SUBSECTOR": "Agroindustria Animal"
+    }
+  ]
+}

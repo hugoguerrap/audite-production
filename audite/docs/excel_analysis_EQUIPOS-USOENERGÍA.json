@@ -1,0 +1,42 @@
+{
+  "hoja": "EQUIPOS-USOENERGÍA",
+  "estructura": {
+    "nombres": [
+      "Sector",
+      "Equipo",
+      "Posible Fuente de Energía"
+    ],
+    "tipos": {
+      "Sector": "object",
+      "Equipo": "object",
+      "Posible Fuente de Energía": "object"
+    }
+  },
+  "muestra_datos": [
+    {
+      "Sector": "Agroindustria",
+      "Equipo": "Maquinaria agrícola",
+      "Posible Fuente de Energía": "Combustible (diésel), Electricidad"
+    },
+    {
+      "Sector": "Agroindustria",
+      "Equipo": "Generación de calor",
+      "Posible Fuente de Energía": "Combustible, Electricidad, Otros"
+    },
+    {
+      "Sector": "Agroindustria",
+      "Equipo": "Motores (bombas, compresores, etc.)",
+      "Posible Fuente de Energía": "Electricidad"
+    },
+    {
+      "Sector": "Agroindustria",
+      "Equipo": "Grúa horquilla",
+      "Posible Fuente de Energía": "Electricidad, Neumática, Combustible"
+    },
+    {
+      "Sector": "Agroindustria",
+      "Equipo": "Sistemas de riego (bombas)",
+      "Posible Fuente de Energía": "Electricidad, Motobomba (combustible)"
+    }
+  ]
+}

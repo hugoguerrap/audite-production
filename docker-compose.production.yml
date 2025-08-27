@@ -65,7 +65,7 @@ services:
       dockerfile: Dockerfile.dev
     container_name: audite_frontend_prod
     environment:
-      - VITE_API_URL=http://localhost:8000
+      - VITE_API_URL=http://35.222.98.45:8000
       - NODE_ENV=production
     ports:
       - "80:5173"
@@ -75,12 +75,9 @@ services:
       - backend
     command: >
       sh -c "
-        echo '📦 Instalando dependencias...' &&
-        npm install &&
-        echo '🏗️ Construyendo aplicación...' &&
-        npm run build &&
-        echo '🚀 Sirviendo aplicación...' &&
-        npm run preview -- --host 0.0.0.0 --port 8080
+        echo '📦 Verificando dependencias...' &&
+        echo '🚀 Iniciando servidor de desarrollo...' &&
+        npm run dev -- --host 0.0.0.0 --port 5173
       "
     restart: always
 

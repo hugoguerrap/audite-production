@@ -125,7 +125,7 @@ const AdminDashboard = () => {
       </header>
 
       <div className="container mx-auto px-4 py-8">
-        <Tabs defaultValue="categorias-industria" className="space-y-6">
+        <Tabs defaultValue="preguntas" className="space-y-6">
           <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="categorias-industria">
               <Factory className="h-4 w-4 mr-2" />

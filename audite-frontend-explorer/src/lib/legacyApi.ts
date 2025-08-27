@@ -172,15 +172,76 @@ export const agroDataService = {
   getProcesses: () => legacyApiService.getProcesses(),
 };
 
-// Servicio de feria temporal para mantener compatibilidad
+// Servicio de feria adaptado para usar autodiagnóstico backend
 export const feriaService = {
-  iniciarContacto: async (data: any) => {
-    const response = await fetch(`${API_URL}/feria/iniciar-contacto/`, {
+  // Genera un session ID único para cada diagnóstico
+  generateSessionId: () => {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      return crypto.randomUUID();
+    }
+    // Fallback para navegadores que no soportan crypto.randomUUID
+    return 'xxxx-4xxx-yxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    }) + '-' + Date.now();
+  },
+
+  iniciarContacto: async (_data: any) => {
+    // Genera un session ID para el nuevo diagnóstico
+    const sessionId = feriaService.generateSessionId();
+    
+    // Adaptar los datos de contacto para el formato del autodiagnóstico
+    // Por ahora, simplemente devolvemos un ID y código de acceso mock
+    return {
+      id: sessionId,
+      accessCode: sessionId.substring(0, 8).toUpperCase(),
+      sessionId: sessionId
+    };
+  },
+
+  iniciarDiagnosticoContacto: async (_data: any) => {
+    // Similar al método anterior
+    const sessionId = feriaService.generateSessionId();
+    
+    return {
+      id: sessionId,
+      accessCode: sessionId.substring(0, 8).toUpperCase(),
+      sessionId: sessionId
+    };
+  },
+
+  completarDiagnostico: async (sessionId: string, data: any) => {
+    // Adaptar los datos del formulario al formato del autodiagnóstico
+    const adaptedResponses: any[] = [];
+    
+    // Mapear los datos del formulario de feria a respuestas de autodiagnóstico
+    if (data.background) {
+      adaptedResponses.push({
+        pregunta_id: 1, // Tamaño de empresa
+        respuesta: data.background.mainInterest === 'cost_reduction' ? 'grande' : 'pequena',
+        valor_numerico: null
+      });
+    }
+    
+    if (data.production) {
+      adaptedResponses.push({
+        pregunta_id: 2, // Sector industrial
+        respuesta: data.production.productType || 'alimentario',
+        valor_numerico: null
+      });
+    }
+    
+    // Realizar la llamada al autodiagnóstico
+    const response = await fetch(`${API_URL}/autodiagnostico/responder`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        session_id: sessionId,
+        respuestas: adaptedResponses
+      }),
     });
     
     if (!response.ok) {
@@ -188,45 +249,24 @@ export const feriaService = {
       throw new Error(errorData.detail || `Error ${response.status}: ${response.statusText}`);
     }
     
-    return response.json();
-  },
-
-  iniciarDiagnosticoContacto: async (data: any) => {
-    const response = await fetch(`${API_URL}/feria/iniciar-contacto/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+    const result = await response.json();
     
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.detail || `Error ${response.status}: ${response.statusText}`);
+    // Obtener sugerencias
+    try {
+      const suggestionsResponse = await fetch(`${API_URL}/autodiagnostico/sugerencias/${sessionId}`);
+      if (suggestionsResponse.ok) {
+        const suggestions = await suggestionsResponse.json();
+        result.sugerencias = suggestions;
+      }
+    } catch (error) {
+      console.warn('No se pudieron obtener sugerencias:', error);
     }
     
-    return response.json();
+    return result;
   },
 
-  completarDiagnostico: async (diagnosticId: string, data: any) => {
-    const response = await fetch(`${API_URL}/feria/completar-diagnostico/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ diagnosticId, ...data }),
-    });
-    
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.detail || `Error ${response.status}: ${response.statusText}`);
-    }
-    
-    return response.json();
-  },
-
-  buscarDiagnostico: async (accessCode: string) => {
-    const response = await fetch(`${API_URL}/feria/buscar-diagnostico/${accessCode}`, {
+  buscarDiagnostico: async (sessionId: string) => {
+    const response = await fetch(`${API_URL}/autodiagnostico/sesion/${sessionId}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -240,8 +280,8 @@ export const feriaService = {
     return response.json();
   },
 
-  obtenerResultados: async (diagnosticoId: string) => {
-    const response = await fetch(`${API_URL}/feria/resultados/${diagnosticoId}`, {
+  obtenerResultados: async (sessionId: string) => {
+    const response = await fetch(`${API_URL}/autodiagnostico/sesion/${sessionId}/completa`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -255,8 +295,8 @@ export const feriaService = {
     return response.json();
   },
 
-  getDiagnosticoByCode: async (accessCode: string) => {
-    const response = await fetch(`${API_URL}/feria/buscar-diagnostico/${accessCode}`, {
+  getDiagnosticoByCode: async (sessionId: string) => {
+    const response = await fetch(`${API_URL}/autodiagnostico/sesion/${sessionId}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -270,8 +310,8 @@ export const feriaService = {
     return response.json();
   },
 
-  getDiagnosticoById: async (diagnosticoId: string) => {
-    const response = await fetch(`${API_URL}/feria/resultados/${diagnosticoId}`, {
+  getDiagnosticoById: async (sessionId: string) => {
+    const response = await fetch(`${API_URL}/autodiagnostico/sesion/${sessionId}/completa`, {
       headers: {
         'Content-Type': 'application/json',
       },

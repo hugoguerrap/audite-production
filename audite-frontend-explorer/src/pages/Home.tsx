@@ -1,27 +1,11 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import BrandButton from "@/components/ui/BrandButton";
 import { Card, CardContent } from "@/components/ui/card";
-import { BarChart, Activity, Info, Settings, Users, Zap, Leaf, LineChart, CheckCircle, FileText, Send, Search, ArrowRight, Shield, Globe, TrendingUp, Building2 } from "lucide-react";
-import IndustrySelector from "./DiagnosticosIndustria/components/IndustrySelector";
-import { CategoriaIndustria } from "@/types/industria";
+import { BarChart, Activity, Info, Users, Zap, Leaf, LineChart, CheckCircle, FileText, TrendingUp } from "lucide-react";
 
 const Home = () => {
-  const navigate = useNavigate();
-  const [selectedIndustry, setSelectedIndustry] = useState<CategoriaIndustria | null>(null);
-
-  // Función para manejar selección de industria
-  const handleIndustrySelect = (categoria: CategoriaIndustria | null) => {
-    setSelectedIndustry(categoria);
-  };
-
-  // Función para navegar al diagnóstico de industria
-  const handleContinueWithIndustry = () => {
-    if (selectedIndustry) {
-      navigate(`/diagnostico-industria/${selectedIndustry.id}`);
-    }
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -127,108 +111,6 @@ const Home = () => {
               <p className="text-audite-secondary font-body leading-relaxed">
                 Recibe un informe detallado con acciones concretas y priorizadas para optimizar tu eficiencia.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Nueva Sección: Diagnóstico Especializado por Industria */}
-      <section className="py-20 px-4 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <div className="flex justify-center mb-4">
-              <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-4 rounded-full">
-                <Building2 className="h-12 w-12 text-white" />
-              </div>
-            </div>
-            <h2 className="text-4xl font-brand font-bold text-audite-dark mb-4">
-              Diagnóstico Especializado por Industria
-            </h2>
-            <p className="text-xl text-audite-secondary font-body max-w-3xl mx-auto mb-8">
-              Obtén recomendaciones específicas y personalizadas para tu sector industrial. 
-              Cada industria tiene características energéticas únicas, y nuestro diagnóstico se adapta a ellas.
-            </p>
-          </div>
-
-          {/* Selector de Industria */}
-          <div className="max-w-5xl mx-auto mb-8">
-            <IndustrySelector
-              onIndustrySelect={handleIndustrySelect}
-              selectedIndustry={selectedIndustry}
-              showOnlyActive={true}
-              mode="grid"
-              allowClearSelection={true}
-            />
-          </div>
-
-          {/* Botón de continuar cuando hay selección */}
-          {selectedIndustry && (
-            <div className="text-center animate-fade-in">
-              <BrandButton 
-                size="lg" 
-                onClick={handleContinueWithIndustry}
-                className="text-lg px-8 py-4"
-              >
-                <ArrowRight className="mr-3 h-5 w-5" />
-                Continuar con {selectedIndustry.nombre}
-              </BrandButton>
-              <p className="text-sm text-audite-secondary mt-3">
-                Diagnóstico especializado con recomendaciones específicas para tu sector
-              </p>
-            </div>
-          )}
-
-          {/* Información adicional sobre diagnósticos especializados */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="bg-blue-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Zap className="h-8 w-8 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-brand font-semibold text-audite-dark mb-3">
-                Preguntas Específicas
-              </h3>
-              <p className="text-audite-secondary font-body">
-                Cuestionarios adaptados a las características energéticas de cada sector industrial
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="bg-green-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <TrendingUp className="h-8 w-8 text-green-600" />
-              </div>
-              <h3 className="text-xl font-brand font-semibold text-audite-dark mb-3">
-                Benchmarks Sectoriales
-              </h3>
-              <p className="text-audite-secondary font-body">
-                Compara tu eficiencia con los estándares y mejores prácticas de tu industria
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="bg-purple-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <CheckCircle className="h-8 w-8 text-purple-600" />
-              </div>
-              <h3 className="text-xl font-brand font-semibold text-audite-dark mb-3">
-                Soluciones Personalizadas
-              </h3>
-              <p className="text-audite-secondary font-body">
-                Recomendaciones priorizadas según tu sector, con ROI y tiempos de implementación
-              </p>
-            </div>
-          </div>
-
-          {/* Separador visual con call-to-action para diagnóstico general */}
-          <div className="mt-16 pt-8 border-t border-gray-200">
-            <div className="text-center">
-              <p className="text-audite-secondary font-body mb-4">
-                ¿Prefieres un diagnóstico general? También puedes realizar nuestro
-              </p>
-              <Button variant="outline" asChild className="font-brand">
-                <Link to="/diagnostico">
-                  <Activity className="mr-2 h-4 w-4" />
-                  Autodiagnóstico General
-                </Link>
-              </Button>
             </div>
           </div>
         </div>

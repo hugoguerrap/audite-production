@@ -33,47 +33,9 @@ const AutodiagnosticoPage = () => {
     if (!currentPregunta) return;
 
     if (currentStep === preguntas.length - 1) {
-      // Es la última pregunta, enviar todas las respuestas ANTES de avanzar
-      // Incluir todas las respuestas, incluyendo la actual
-      const todasLasRespuestas = { ...respuestas };
-      // Asegurar que la respuesta actual esté incluida
-      if (respuestas[currentPregunta.id] !== undefined) {
-        todasLasRespuestas[currentPregunta.id] = respuestas[currentPregunta.id];
-      }
-      
-      const allRespuestas = Object.entries(todasLasRespuestas).map(([preguntaId, valor]) => {
-        const pregunta = preguntas.find(p => p.id === parseInt(preguntaId));
-        if (!pregunta) return null;
-
-        const respuesta: any = {
-          session_id: sessionId,
-          pregunta_id: parseInt(preguntaId),
-        };
-
-        switch (pregunta.tipo_respuesta) {
-          case 'radio':
-          case 'select':
-            respuesta.opcion_seleccionada = valor as string;
-            break;
-          case 'checkbox':
-            respuesta.opciones_seleccionadas = valor as string[];
-            break;
-          case 'text':
-            respuesta.respuesta_texto = valor as string;
-            break;
-          case 'number':
-            respuesta.respuesta_numero = valor as number;
-            break;
-          case 'ordering':
-            respuesta.respuesta_texto = JSON.stringify(valor);
-            break;
-        }
-
-        return respuesta;
-      }).filter(Boolean);
-
-      // Enviar todas las respuestas y esperar confirmación
-      const finalSessionId = await submitRespuestas(allRespuestas);
+      // Es la última pregunta, enviar todas las respuestas usando el hook
+      // que ya tiene el mapeo de tipos correcto
+      const finalSessionId = await submitRespuestas();
       if (finalSessionId) {
         // Solo avanzar después de que se envíen exitosamente
         console.log('Respuestas enviadas exitosamente, sessionId final:', finalSessionId);

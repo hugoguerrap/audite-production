@@ -177,9 +177,10 @@ async def obtener_sugerencias_sesion(session_id: str, db: Session = Depends(get_
             continue
             
         opciones_elegidas = []
-        if pregunta.tipo_respuesta in ['radio', 'select'] and respuesta.opcion_seleccionada:
+        # Usar tipos de respuesta del backend (base de datos)
+        if pregunta.tipo_respuesta in ['seleccion_unica', 'select'] and respuesta.opcion_seleccionada:
             opciones_elegidas.append(respuesta.opcion_seleccionada)
-        elif pregunta.tipo_respuesta == 'checkbox' and respuesta.opciones_seleccionadas:
+        elif pregunta.tipo_respuesta == 'seleccion_multiple' and respuesta.opciones_seleccionadas:
             opciones_elegidas.extend(respuesta.opciones_seleccionadas)
 
         for opcion in pregunta.opciones:
@@ -496,7 +497,7 @@ async def admin_obtener_estadisticas(
     # Respuestas más comunes por pregunta (top 5 por pregunta)
     respuestas_mas_comunes = {}
     for pregunta in preguntas[:5]:  # Solo las primeras 5 preguntas para no sobrecargar
-        if pregunta.tipo_respuesta in ['radio', 'select']:
+        if pregunta.tipo_respuesta in ['seleccion_unica', 'select']:
             comunes = db.query(
                 AutodiagnosticoRespuesta.opcion_seleccionada,
                 func.count(AutodiagnosticoRespuesta.id).label('count')

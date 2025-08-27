@@ -167,7 +167,14 @@ const AutodiagnosticoStep: React.FC<AutodiagnosticoStepProps> = ({
   );
 
   const renderInput = () => {
-    switch (pregunta.tipo_respuesta) {
+    // Mapear tipos de respuesta del backend a tipos del frontend
+    const tipoMapeado = pregunta.tipo_respuesta === 'seleccion_unica' ? 'radio' :
+                        pregunta.tipo_respuesta === 'seleccion_multiple' ? 'checkbox' :
+                        pregunta.tipo_respuesta === 'texto' ? 'text' :
+                        pregunta.tipo_respuesta === 'numero' ? 'number' :
+                        pregunta.tipo_respuesta;
+    
+    switch (tipoMapeado) {
       case 'radio':
         return renderRadioInput();
       case 'checkbox':
@@ -189,7 +196,7 @@ const AutodiagnosticoStep: React.FC<AutodiagnosticoStepProps> = ({
       default:
         return (
           <div className="text-red-500 p-4 border border-red-200 rounded">
-            Tipo de pregunta no soportado: {pregunta.tipo_respuesta}
+            Tipo de pregunta no soportado: {pregunta.tipo_respuesta} (mapeado: {tipoMapeado})
           </div>
         );
     }
@@ -208,7 +215,8 @@ const AutodiagnosticoStep: React.FC<AutodiagnosticoStepProps> = ({
       </div>
 
       {/* Mostrar opciones especiales como botones auxiliares para radio/checkbox */}
-      {(pregunta.tipo_respuesta === 'radio' || pregunta.tipo_respuesta === 'checkbox') && 
+      {((pregunta.tipo_respuesta === 'radio' || pregunta.tipo_respuesta === 'checkbox') ||
+        (pregunta.tipo_respuesta === 'seleccion_unica' || pregunta.tipo_respuesta === 'seleccion_multiple')) && 
        pregunta.opciones.some(op => op.es_especial) && (
         <div className="pt-2 border-t">
           <p className="text-xs text-muted-foreground mb-2">Opciones rápidas:</p>
@@ -221,9 +229,9 @@ const AutodiagnosticoStep: React.FC<AutodiagnosticoStepProps> = ({
                   variant="outline"
                   size="sm"
                   onClick={() => {
-                    if (pregunta.tipo_respuesta === 'radio') {
+                    if (pregunta.tipo_respuesta === 'radio' || pregunta.tipo_respuesta === 'seleccion_unica') {
                       onChange(opcion.valor);
-                    } else if (pregunta.tipo_respuesta === 'checkbox') {
+                    } else if (pregunta.tipo_respuesta === 'checkbox' || pregunta.tipo_respuesta === 'seleccion_multiple') {
                       const selectedValues = Array.isArray(value) ? value : [];
                       if (selectedValues.includes(opcion.valor)) {
                         onChange(selectedValues.filter(v => v !== opcion.valor));
@@ -234,7 +242,7 @@ const AutodiagnosticoStep: React.FC<AutodiagnosticoStepProps> = ({
                   }}
                   disabled={loading}
                   className={
-                    pregunta.tipo_respuesta === 'radio' 
+                    (pregunta.tipo_respuesta === 'radio' || pregunta.tipo_respuesta === 'seleccion_unica')
                       ? (value === opcion.valor ? 'bg-primary/10 border-primary' : '')
                       : (Array.isArray(value) && value.includes(opcion.valor) ? 'bg-primary/10 border-primary' : '')
                   }

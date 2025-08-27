@@ -34,7 +34,7 @@ services:
       - ALGORITHM=HS256
       - ADMIN_USERNAME=admin
       - ADMIN_PASSWORD=Audite2024SecurePass!
-      - CORS_ORIGINS=*
+      - CORS_ORIGINS=http://34.42.186.161
       - ENVIRONMENT=production
       - LOG_LEVEL=INFO
     ports:
@@ -65,7 +65,7 @@ services:
       dockerfile: Dockerfile.dev
     container_name: audite_frontend_prod
     environment:
-      - VITE_API_URL=http://35.222.98.45:8000
+      - VITE_API_URL=http://34.42.186.161:8000
       - NODE_ENV=production
     ports:
       - "80:5173"

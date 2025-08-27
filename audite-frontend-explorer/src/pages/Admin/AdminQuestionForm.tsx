@@ -41,7 +41,15 @@ const AdminQuestionForm: React.FC<AdminQuestionFormProps> = ({
     if (preguntaEdit) {
       setOrden(preguntaEdit.numero_orden);
       setTextoPregunta(preguntaEdit.pregunta);
-      setTipoRespuesta(preguntaEdit.tipo_respuesta);
+      
+      // Mapear tipos de respuesta del backend a tipos del frontend
+      const tipoMapeado = preguntaEdit.tipo_respuesta === 'seleccion_unica' ? 'radio' :
+                         preguntaEdit.tipo_respuesta === 'seleccion_multiple' ? 'checkbox' :
+                         preguntaEdit.tipo_respuesta === 'texto' ? 'text' :
+                         preguntaEdit.tipo_respuesta === 'numero' ? 'number' :
+                         preguntaEdit.tipo_respuesta as 'radio' | 'checkbox' | 'text' | 'number' | 'select';
+      
+      setTipoRespuesta(tipoMapeado);
       setActiva(preguntaEdit.es_activa);
       setOpciones(preguntaEdit.opciones.map(op => ({
         texto_opcion: op.texto_opcion,
@@ -127,10 +135,17 @@ const AdminQuestionForm: React.FC<AdminQuestionFormProps> = ({
         throw new Error('Las opciones marcadas con sugerencia deben tener texto de sugerencia');
       }
 
+      // Mapear tipos de respuesta del frontend al formato del backend
+      const tipoBackend = tipoRespuesta === 'radio' ? 'seleccion_unica' :
+                         tipoRespuesta === 'checkbox' ? 'seleccion_multiple' :
+                         tipoRespuesta === 'text' ? 'texto' :
+                         tipoRespuesta === 'number' ? 'numero' :
+                         tipoRespuesta;
+
       const data: CreatePreguntaData = {
         numero_orden: orden,
         pregunta: textoPregunta.trim(),
-        tipo_respuesta: tipoRespuesta,
+        tipo_respuesta: tipoBackend as any,
         es_activa: activa,
         opciones: necesitaOpciones ? opciones.filter(op => op.texto_opcion.trim()) : []
       };

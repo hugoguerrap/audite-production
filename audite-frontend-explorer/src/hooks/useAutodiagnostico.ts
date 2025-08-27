@@ -79,7 +79,14 @@ export const useAutodiagnostico = () => {
           pregunta_id: parseInt(preguntaId),
         };
 
-        switch (pregunta.tipo_respuesta) {
+        // Mapear tipos de respuesta del backend a tipos del frontend
+        const tipoMapeado = pregunta.tipo_respuesta === 'seleccion_unica' ? 'radio' :
+                           pregunta.tipo_respuesta === 'seleccion_multiple' ? 'checkbox' :
+                           pregunta.tipo_respuesta === 'texto' ? 'text' :
+                           pregunta.tipo_respuesta === 'numero' ? 'number' :
+                           pregunta.tipo_respuesta;
+
+        switch (tipoMapeado) {
           case 'radio':
           case 'select':
             respuesta.opcion_seleccionada = valor as string;
